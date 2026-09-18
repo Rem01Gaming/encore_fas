@@ -2,3 +2,14 @@ obj/
 libs/
 .idea/
 .vscode/
+*.o
+*.ko
+*.mod
+*.mod.c
+.*.cmd
+*.zip
+Module.symvers
+modules.order
+kernel/scripts/tools/check_symbol
+tests/detector/fas_det_test
+tests/qemu/.qemu-work/
