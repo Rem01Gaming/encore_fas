@@ -7,12 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-/**
- * @brief Converts a runtime virtual address into its on-disk file offset by
- *        locating the PT_LOAD segment that covers it.
- */
-static int vaddr_to_file_offset(const uint8_t *map, const Elf64_Ehdr *eh, uint64_t vaddr,
-                                 uint64_t *out) {
+static int vaddr_to_file_offset(const uint8_t *map, const Elf64_Ehdr *eh, uint64_t vaddr, uint64_t *out) {
     const Elf64_Phdr *ph = (const Elf64_Phdr *)(map + eh->e_phoff);
 
     for (int i = 0; i < eh->e_phnum; i++) {
@@ -26,9 +21,7 @@ static int vaddr_to_file_offset(const uint8_t *map, const Elf64_Ehdr *eh, uint64
     return -1;
 }
 
-static int find_symbol_vaddr(const uint8_t *map, const Elf64_Shdr *symtab, const Elf64_Shdr *strtab,
-                              const char *const *candidates, size_t candidate_count,
-                              uint64_t *out_vaddr) {
+static int find_symbol_vaddr(const uint8_t *map, const Elf64_Shdr *symtab, const Elf64_Shdr *strtab, const char *const *candidates, size_t candidate_count, uint64_t *out_vaddr) {
     const Elf64_Sym *syms = (const Elf64_Sym *)(map + symtab->sh_offset);
     size_t count = symtab->sh_size / sizeof(Elf64_Sym);
     const char *strs = (const char *)(map + strtab->sh_offset);
@@ -46,8 +39,7 @@ static int find_symbol_vaddr(const uint8_t *map, const Elf64_Shdr *symtab, const
     return -1;
 }
 
-int fas_elf_resolve_offset(const char *lib_path, const char *const *symbol_candidates,
-                            size_t candidate_count, uint64_t *out_offset) {
+int fas_elf_resolve_offset(const char *lib_path, const char *const *symbol_candidates, size_t candidate_count, uint64_t *out_offset) {
     struct stat st;
     uint8_t *map = MAP_FAILED;
     int ret = -1;
@@ -79,7 +71,6 @@ int fas_elf_resolve_offset(const char *lib_path, const char *const *symbol_candi
             symtab = &sh[i];
     }
 
-    /* Prefer .symtab when present (unstripped), it is a superset of .dynsym. */
     const Elf64_Shdr *target = symtab ? symtab : dynsym;
 
     if (!target)

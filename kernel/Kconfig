@@ -1,0 +1,7 @@
+config ENCORE_FAS
+	tristate "Encore Tweaks FAS kernel module"
+	depends on ANDROID && UPROBES
+	default n
+	help
+	  frame aware scheduling kernel driver for Encore Tweaks (/dev/encore_fas).
+	  Say N unless you are building a daemon that uses this module.
